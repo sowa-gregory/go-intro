@@ -13,7 +13,6 @@ type Book struct {
 }
 
 func POSTTest(ctx *gin.Context) {
-
 	var inputData Book
 	if err := ctx.BindJSON(&inputData); err != nil {
 		return
