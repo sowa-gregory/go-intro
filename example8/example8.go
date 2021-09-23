@@ -2,87 +2,63 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	"os"
+	"sync"
 )
 
-func worker1(ch chan<- string) {
-	sec := rand.Intn(20)
-	time.Sleep(time.Second * time.Duration(sec))
-	fmt.Println("worker1 done")
-	ch <- "hi from worker1"
+func worker1(wg *sync.WaitGroup, num int) {
+	name := fmt.Sprintf("/tmp/file%d", num)
+
+	file, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+		wg.Done()
+	}
+	for i := 0; i < 100; i++ {
+		_, err = file.WriteString(fmt.Sprintf("line%d\n", i))
+		if err != nil {
+			fmt.Println(err)
+			file.Close()
+			wg.Done()
+		}
+	}
+	_, err = file.WriteString("end\n")
+	if err != nil {
+		fmt.Println(err)
+	}
+	file.Close()
+	wg.Done()
 }
 
-func worker2(ch chan<- int) {
-	time.Sleep(time.Second * time.Duration(rand.Intn(20)))
-	fmt.Println("worker2 done")
-	ch <- 250
-}
+/*
+func worker2(wg *sync.WaitGroup, num int) {
+	defer wg.Done()
+	name := fmt.Sprintf("/tmp/file%d", num)
+	file, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer file.Close()
+	for i := 0; i < 100; i++ {
+		_, err = file.WriteString(fmt.Sprintf("line%d\n", i))
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+	_, err = file.WriteString("end\n")
+	if err != nil {
+		fmt.Println(err)
+	}
+}*/
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
-	ch1 := make(chan string)
-	ch2 := make(chan int)
+	var wg sync.WaitGroup
 
-	go worker1(ch1)
-	go worker2(ch2)
-
-	fmt.Println(<-ch1)
-	fmt.Println(<-ch2)
+	numWorkers := 10
+	for i := 0; i < numWorkers; i++ {
+		wg.Add(1)
+		go worker1(&wg, i)
+	}
+	wg.Wait()
 
 }
-
-/*
-for {
-		select {
-		case msg := <-ch1:
-			fmt.Println(msg)
-		case msg := <-ch2:
-			fmt.Println(msg)
-
-		}
-		fmt.Println("...")
-	}
-*/
-
-/*
-for {
-		select {
-		case msg := <-ch1:
-			fmt.Println(msg)
-		case msg := <-ch2:
-			fmt.Println(msg)
-		default:
-
-			fmt.Println("...")
-		}
-	}
-*/
-
-/*
-for {
-		select {
-		case msg := <-ch1:
-			fmt.Println(msg)
-		case msg := <-ch2:
-			fmt.Println(msg)
-		default:
-			fmt.Println("...")
-		}
-		time.Sleep(time.Second * 1)
-	}
-*/
-
-/*
-for {
-		select {
-		case msg := <-ch1:
-			fmt.Println(msg)
-		case msg := <-ch2:
-			fmt.Println(msg)
-		case <-time.After(time.Second * 1):
-			fmt.Println("...")
-		}
-
-	}
-*/
