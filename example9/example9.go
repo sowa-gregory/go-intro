@@ -92,5 +92,5 @@ func start4() {
 }
 
 func main() {
-	start1()
+	start4()
 }

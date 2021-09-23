@@ -1,1 +1,1 @@
-env GOOS=linux GOARCH=amd64 go build -o example5_docker -ldflags '-s'
+env GOOS=linux GOARCH=amd64 go build -o example5_lsp -ldflags '-s'

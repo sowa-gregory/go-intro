@@ -1,8 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	str := "blekota" + "qwer"
-	fmt.Println(str)
+	a, b := 4, 7
+	b, a = 2, 8
+
+	r := fmt.Sprintf("%x%d", 58, 39)
+	fmt.Println(a, b, r)
+
 }

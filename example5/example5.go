@@ -11,6 +11,7 @@ func POSTTest(ctx *gin.Context) {
 	body, _ := ioutil.ReadAll(ctx.Request.Body)
 	println(string(body))
 	ctx.String(http.StatusOK, "ok")
+
 }
 
 func main() {

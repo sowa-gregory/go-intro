@@ -15,6 +15,7 @@ type Book struct {
 func POSTTest(ctx *gin.Context) {
 	var inputData Book
 	if err := ctx.BindJSON(&inputData); err != nil {
+		ctx.String(http.StatusBadRequest, "bzdury")
 		return
 	}
 	userName := ctx.Param("username")

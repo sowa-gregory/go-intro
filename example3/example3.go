@@ -12,7 +12,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for i, f := range files {
-		fmt.Println(i, f.Name())
+	for _, f := range files {
+		fmt.Println(f.Name())
 	}
 }

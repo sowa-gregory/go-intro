@@ -1,0 +1,1 @@
+env GOOS=linux GOARCH=arm GOARM=6 go build -o example5_lsp -ldflags '-s'
