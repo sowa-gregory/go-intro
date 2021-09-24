@@ -15,9 +15,9 @@ func worker(ch chan<- uint64, max int) {
 
 func main() {
 	ch := make(chan uint64)
-	numWorkers := 1000000
+	numWorkers := 1000
 
-	for i := 0; i < 1000000; i++ {
+	for i := 0; i < 1000; i++ {
 		go worker(ch, i%100)
 	}
 

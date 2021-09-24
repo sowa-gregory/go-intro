@@ -22,7 +22,7 @@ func workerInt(ch chan<- int) {
 func start1() {
 	rand.Seed(time.Now().UnixNano())
 	ch1 := make(chan string)
-	ch2 := make(chan int)
+	ch2 := make(chan int, 5)
 
 	go workerString(ch1)
 	go workerInt(ch2)
@@ -34,7 +34,7 @@ func start1() {
 func start2() {
 	rand.Seed(time.Now().UnixNano())
 	ch1 := make(chan string)
-	ch2 := make(chan int)
+	ch2 := make(chan int, 5)
 
 	go workerString(ch1)
 	go workerInt(ch2)
@@ -53,7 +53,7 @@ func start2() {
 func start3() {
 	rand.Seed(time.Now().UnixNano())
 	ch1 := make(chan string)
-	ch2 := make(chan int)
+	ch2 := make(chan int, 5)
 
 	go workerString(ch1)
 	go workerInt(ch2)
@@ -74,7 +74,7 @@ func start3() {
 func start4() {
 	rand.Seed(time.Now().UnixNano())
 	ch1 := make(chan string)
-	ch2 := make(chan int)
+	ch2 := make(chan int, 5)
 
 	go workerString(ch1)
 	go workerInt(ch2)
