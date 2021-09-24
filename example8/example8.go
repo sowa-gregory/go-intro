@@ -60,7 +60,7 @@ func main() {
 	numWorkers := 10
 	for i := 0; i < numWorkers; i++ {
 		wg.Add(1)
-		go worker2(&wg, i)
+		go worker1(&wg, i)
 	}
 	wg.Wait()
 
